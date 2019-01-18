@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //global variables
 app.use((req,res, next)=>{
   res.locals.errors = null;
-  res.locals.updateInfo = null
+  //res.locals.updateInfo = null
   next();
 })
 //validator middleware
@@ -119,11 +119,12 @@ app.delete('/users/delete/:id',(req,res)=>{
 });
 //get request for update
 app.get('/update/:id',(req,res)=>{
-  db.update.findOne({
+  db.users.findOne({
     _id: ObjectId(req.params.id)
   }, function(err, doc) {
     console.log(doc);
     res.render('update',{
+      title: 'Update',
       users : doc
     });
   })
@@ -131,12 +132,12 @@ app.get('/update/:id',(req,res)=>{
 });
 
 //put request for update
-app.put('/users/update/:id',(req, res)=>{
+app.put('/update/:id',(req, res)=>{
   console.log(req.params.id)
   var updatedInfo = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email
+    first_name: req.params.first_name,
+    last_name: req.params.last_name,
+    email: req.params.email
   }
   db.users.findAndModify({
     query: { _id: ObjectId(req.params.id) },
@@ -148,7 +149,7 @@ app.put('/users/update/:id',(req, res)=>{
     }
     res.redirect('/');
   })
-})
+});
 var server = app.listen(3000, function () {
     var host = server.address().address;
     var port = server.address().port;
