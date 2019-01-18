@@ -1,0 +1,52 @@
+<% include partials/header %> 
+    <h1>Add customer</h1>
+    <% if(errors){ %> 
+    <ul>        
+        <% errors.forEach((errors)=>{ %>
+            <li><%= errors.msg %></li>
+        <% }) %> 
+        <% } %> 
+    </ul>
+    <form action="/users/add" method="post">
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="emailHelp" placeholder="First Name">
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" aria-describedby="emailHelp" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <h1><%= title %> </h1>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Operations</th>
+    </tr>
+  </thead>
+  <tbody>
+
+        <% users.forEach((user)=>{ %>
+        <tr>
+            <td><%= user._id %></td>
+            <td><%= user.first_name %></td> 
+            <td><%= user.last_name %></td>
+            <td><%= user.email %></td>
+            <td><a href="#" class="btn btn-primary deleteUser"
+                    data-id="<%= user._id %>">Delete</a></td>
+        <% }) %>
+        </tr>
+  </tbody>
+</table>
+    
+<% include partials/footer %> 
