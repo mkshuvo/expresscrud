@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //global variables
 app.use((req,res, next)=>{
   res.locals.errors = null;
+  res.locals.updateInfo = null
   next();
 })
 //validator middleware
@@ -107,16 +108,47 @@ app.post('/users/add',(req,res)=>{
 })
 
 app.delete('/users/delete/:id',(req,res)=>{
-  //console.log(req.params.id)
+  console.log(req.params.id)
 
-  db.users.remove({_id: ObjectId(req.params.id)},(err,result)=>{
+  // db.users.remove({_id: ObjectId(req.params.id)},(err,result)=>{
+  //   if(err){
+  //     console.log(err);
+  //   }
+  //   res.redirect('/');
+  // });
+});
+//get request for update
+app.get('/update/:id',(req,res)=>{
+  db.update.findOne({
+    _id: ObjectId(req.params.id)
+  }, function(err, doc) {
+    console.log(doc);
+    res.render('update',{
+      users : doc
+    });
+  })
+  
+});
+
+//put request for update
+app.put('/users/update/:id',(req, res)=>{
+  console.log(req.params.id)
+  var updatedInfo = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email
+  }
+  db.users.findAndModify({
+    query: { _id: ObjectId(req.params.id) },
+    update: { $set: { updatedInfo } },
+    new: true
+  }, function (err, doc, lastErrorObject) {
     if(err){
       console.log(err);
     }
     res.redirect('/');
-  });
-});
-
+  })
+})
 var server = app.listen(3000, function () {
     var host = server.address().address;
     var port = server.address().port;
