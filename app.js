@@ -110,12 +110,12 @@ app.post('/users/add',(req,res)=>{
 app.delete('/users/delete/:id',(req,res)=>{
   console.log(req.params.id)
 
-  // db.users.remove({_id: ObjectId(req.params.id)},(err,result)=>{
-  //   if(err){
-  //     console.log(err);
-  //   }
-  //   res.redirect('/');
-  // });
+  db.users.remove({_id: ObjectId(req.params.id)},(err,result)=>{
+    if(err){
+      console.log(err);
+    }
+    res.redirect('/');
+  });
 });
 //get request for update
 app.get('/update/:id',(req,res)=>{
